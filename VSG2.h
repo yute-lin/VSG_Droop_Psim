@@ -189,10 +189,10 @@ void IsrVarsinitial(){
 	IsrVars.Pins[1]=600;
 	IsrVars.wc=75,IsrVars.E=89.8;
 //	IsrVars.J=50,IsrVars.D=-90;
-	IsrVars.J=0.05,IsrVars.D=3,IsrVars.m=3;
+	IsrVars.J=0.05,IsrVars.D=3,IsrVars.m=3; //IsrVars.m=3
 	IsrVars.omega[0]=377,IsrVars.omega[1]=377,IsrVars.vsg_theta[0]=0,IsrVars.vsg_theta[1]=0;
 	IsrVars.delta_Q[1]=0,IsrVars.delta_E[1]=0;
-	IsrVars.P0=1100,IsrVars.Qcmd=150,IsrVars.kq=0.00005;
+	IsrVars.P0=1100,IsrVars.Qcmd=150,IsrVars.kq=0.00001;
 	IsrVars.c[3]=1/(2*IsrVars.J+IsrVars.m*IsrVars.T/377+IsrVars.D*IsrVars.T);
 	IsrVars.c[0]=IsrVars.T*(2*IsrVars.P0/377+2*IsrVars.m+2*IsrVars.D*377);
 	IsrVars.c[1]=IsrVars.T/377;
@@ -292,15 +292,15 @@ int cal(double t,double delt,double *in,double *out){
 			DsogiPLL.f32Theta += DsogiPLL.f32Tcal * DsogiPLL.f32Freq_Est * PI_2_VALUE;//Radius
 
 			IsrVars.theta_PLL = DsogiPLL.f32Theta + PI_2_VALUE/4;
-//			if(IsrVars.theta_PLL >= PI_2_VALUE)
-//			{
-//				IsrVars.theta_PLL -= PI_2_VALUE;
-//			}
+			if(IsrVars.theta_PLL >= PI_2_VALUE)
+			{
+				IsrVars.theta_PLL -= PI_2_VALUE;
+			}
 			
-//			if(DsogiPLL.f32Theta >= PI_2_VALUE)
-//			{
-//				DsogiPLL.f32Theta -= PI_2_VALUE;
-//			}
+			if(DsogiPLL.f32Theta >= PI_2_VALUE)
+			{
+				DsogiPLL.f32Theta -= PI_2_VALUE;
+			}
 			DsogiPLL.f32Cos_Theta = __cos(DsogiPLL.f32Theta); //cos(DsogiPLL.f32Theta);
 			DsogiPLL.f32Sin_Theta = __sin(DsogiPLL.f32Theta); //sin(DsogiPLL.f32Theta);
 
@@ -342,10 +342,10 @@ int cal(double t,double delt,double *in,double *out){
 			
 			IsrVars.vsg_theta[0] = 0.5*(IsrVars.T*IsrVars.omega[0]+IsrVars.T*IsrVars.omega[1]+2*IsrVars.vsg_theta[1]);
 		
-//			if(IsrVars.vsg_theta[0] >= PI_2_VALUE) 
-//			{
-//				IsrVars.vsg_theta[0] -= PI_2_VALUE;
-//			}
+			if(IsrVars.vsg_theta[0] >= PI_2_VALUE) 
+			{
+				IsrVars.vsg_theta[0] -= PI_2_VALUE;
+			}
 			
 			IsrVars.f32Sin_Theta = __sin(IsrVars.vsg_theta[0]);
 			IsrVars.f32Cos_Theta = __cos(IsrVars.vsg_theta[0]);
